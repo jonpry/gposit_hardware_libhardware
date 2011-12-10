@@ -196,6 +196,9 @@ typedef struct gralloc_module_t {
 
 /*****************************************************************************/
 
+typedef void(*ogl_free_t)(unsigned int text);
+typedef void*(*ogl_alloc_t)(int w, int h, int format, unsigned int *text, int* stride, int* size, void* base);
+
 /**
  * Every device data structure must begin with hw_device_t
  * followed by module specific public methods and attributes.
@@ -216,7 +219,9 @@ typedef struct alloc_device_t {
     
     int (*alloc)(struct alloc_device_t* dev,
             int w, int h, int format, int usage,
-            buffer_handle_t* handle, int* stride);
+            buffer_handle_t* handle, int* stride,
+	    unsigned int* text, ogl_alloc_t ogl_alloc,
+	    ogl_free_t ogl_free);
 
     /*
      * (*free)() Frees a previously allocated buffer. 
